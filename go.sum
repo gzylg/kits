@@ -2,12 +2,6 @@ github.com/BurntSushi/toml v1.1.0 h1:ksErzDEI1khOiGPgpwuI7x2ebx/uXQNw7xJpn9Eq1+I
 github.com/BurntSushi/toml v1.1.0/go.mod h1:CxXYINrC8qIiEnFrOxCa7Jy5BFHlXnUU2pbicEuybxQ=
 github.com/benbjohnson/clock v1.1.0 h1:Q92kusRqC1XV2MjkWETPvjJVqKetz1OzxZB7mHJLju8=
 github.com/benbjohnson/clock v1.1.0/go.mod h1:J11/hYXuz8f4ySSvYwY0FKfm+ezbsZBKZxNJlLklBHA=
-github.com/chanxuehong/internal v0.0.0-20211009055552-2f1ec6dd5aa5 h1:O/T0FN+6Ek6FtEirQ0tR6/USpMlImpB9VvCe/biV2Ro=
-github.com/chanxuehong/internal v0.0.0-20211009055552-2f1ec6dd5aa5/go.mod h1:tciQTa8D/jc/lJKL7ju/mnBx3G+Qbh+OxgPH84myaRs=
-github.com/chanxuehong/rand v0.0.0-20211009035549-2f07823e8e99 h1:K62Lb6bsgLOB++z/VAvRvtiEBdNCuMfmQGTGGWMdPpM=
-github.com/chanxuehong/rand v0.0.0-20211009035549-2f07823e8e99/go.mod h1:9+sJ9zvvkXC5sPjPEZM3Jpb9n2Q2VtcrGZly0UHYF5I=
-github.com/chanxuehong/sid v0.0.0-20211009063739-da1dc0970db5 h1:78lgJzcAvt83RlzMgdoPFnbYRqx0umoXge7sEPeXJb8=
-github.com/chanxuehong/sid v0.0.0-20211009063739-da1dc0970db5/go.mod h1:cZlH3Wnz06cFtt+2R3xDgvXm2NGXC4PzcPE2P3FB8XI=
 github.com/davecgh/go-spew v1.1.0/go.mod h1:J7Y8YcW2NihsgmVo/mv3lAwl/skON4iLHjSsI+c5H38=
 github.com/davecgh/go-spew v1.1.1 h1:vj9j/u1bqnvCEfJOwUhtlOARqs3+rkHYY13jYWTU97c=
 github.com/davecgh/go-spew v1.1.1/go.mod h1:J7Y8YcW2NihsgmVo/mv3lAwl/skON4iLHjSsI+c5H38=
