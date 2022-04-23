@@ -6,32 +6,34 @@ import (
 )
 
 type YsErr struct {
-	code     int     // 错误代码
-	msg      string  // 错误信息
-	funcName uintptr // 错误处函数名
-	file     string  // 错误处文件名
-	line     int     // 错误所在行
+	Code int    // 错误代码
+	Msg  string // 错误信息
+	Func string // 错误处函数名+行号
+	File string // 错误处文件名
+}
+
+func (e *YsErr) caller() {
+	if funcName, file, line, ok := runtime.Caller(2); ok {
+		e.Func = fmt.Sprintf("%s:%d", runtime.FuncForPC(funcName).Name(), line)
+		e.File = file
+	}
 }
 
 func New(msg string) error {
-	e := &YsErr{msg: msg}
-	if funcName, file, line, ok := runtime.Caller(1); ok {
-		e.funcName = funcName
-		e.file = file
-		e.line = line
-	}
-
+	e := &YsErr{Code: -1, Msg: msg}
+	e.caller()
 	return e
 }
 
 func NewWithErr(prefixStr string, err error) error {
-	e := &YsErr{msg: prefixStr + err.Error()}
-	if funcName, file, line, ok := runtime.Caller(1); ok {
-		e.funcName = funcName
-		e.file = file
-		e.line = line
-	}
+	e := &YsErr{Code: -1, Msg: prefixStr + err.Error()}
+	e.caller()
+	return e
+}
 
+func NewWithCode(code ErrType) error {
+	e := &YsErr{Code: int(code), Msg: msgList[code]}
+	e.caller()
 	return e
 }
 
@@ -41,15 +43,30 @@ func AsYsErr(e error) bool {
 	return ok
 }
 
+// IsYsErr 判断错误内容是否相同
+func IsYsErr(e1 error, e2 error) bool {
+	return e1.Error() == e2.Error()
+}
+
+// ISYsErrWithStrict 间隔判断两个错误内容是否相同
+// 先通过 AsYsErr 检查，通过后判断两个错误内容的code和msg是否相同
+func IsYsErrWithStrict(e1 error, e2 error) bool {
+	if !AsYsErr(e1) || !AsYsErr(e2) {
+		return false
+	}
+	return e1.(*YsErr).Code == e2.(*YsErr).Code && e1.(*YsErr).Msg == e2.(*YsErr).Msg
+}
+
 func (e *YsErr) Error() string {
-	return e.msg
+	return e.Msg
 }
 
 func (e *YsErr) Errorf() string {
 	return fmt.Sprintf(
-		"msg:%s, func:%s:%v, file:%s",
-		e.msg,
-		runtime.FuncForPC(e.funcName).Name(), e.line,
-		e.file,
+		"code:%d, msg:%s, func:%s, file:%s",
+		e.Code,
+		e.Msg,
+		e.Func,
+		e.File,
 	)
 }
