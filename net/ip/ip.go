@@ -1,26 +1,11 @@
 package ip
 
 import (
+	"errors"
 	"net"
 	"strconv"
 	"strings"
 )
-
-// // GetLocalIP 获取内网ip
-// func GetLocalIP() (string, error) {
-// 	info, err := net.InterfaceAddrs()
-// 	if err != nil {
-// 		return "", err
-// 	}
-// 	for _, addr := range info {
-// 		if ipnet, ok := addr.(*net.IPNet); ok && !ipnet.IP.IsLoopback() {
-// 			if ipnet.IP.To4() != nil {
-// 				return ipnet.IP.String(), nil
-// 			}
-// 		}
-// 	}
-// 	return "", errors.New("valid local IP not found")
-// }
 
 // // 第 3 快
 // func GetExternalIP1() (ip string, err error) {
@@ -133,4 +118,20 @@ func IPStrToUInt32(ip string) uint32 {
 	sum += uint32(b3)
 
 	return sum
+}
+
+// GetLocalIP 获取内网ip
+func GetLocalIP() (string, error) {
+	info, err := net.InterfaceAddrs()
+	if err != nil {
+		return "", err
+	}
+	for _, addr := range info {
+		if ipnet, ok := addr.(*net.IPNet); ok && !ipnet.IP.IsLoopback() {
+			if ipnet.IP.To4() != nil {
+				return ipnet.IP.String(), nil
+			}
+		}
+	}
+	return "", errors.New("valid local IP not found")
 }
