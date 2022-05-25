@@ -60,3 +60,7 @@ func NewWithErrType(errType ErrType) error {
 	e.caller()
 	return e
 }
+
+func GetErrMessage(errType ErrType) string {
+	return msgList[errType]
+}
