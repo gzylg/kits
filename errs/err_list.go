@@ -51,3 +51,12 @@ func init() {
 	// msgList[]=""
 
 }
+
+func NewWithErrType(errType ErrType) error {
+	e := &YsErr{Code: -1, Msg: msgList[ERRTYPE_INTERNAL_SERVER]}
+	if msg, ok := msgList[errType]; ok {
+		e.Msg = msg
+	}
+	e.caller()
+	return e
+}
