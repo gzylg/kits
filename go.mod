@@ -3,6 +3,7 @@ module github.com/gzylg/kits
 go 1.18
 
 require (
+	github.com/gomodule/redigo v1.8.8
 	github.com/olivere/elastic/v7 v7.0.32
 	github.com/satori/go.uuid v1.2.0
 	go.uber.org/zap v1.21.0

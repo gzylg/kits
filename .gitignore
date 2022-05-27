@@ -17,3 +17,4 @@ README.zh-CN.md
 crypt/goencrypt/*
 rabbitmq_test/*
 es_test/*
+cache/main/*
