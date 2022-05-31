@@ -5,7 +5,7 @@ import (
 	"encoding/hex"
 )
 
-func Gen(content []byte) (encrypted string, err error) {
+func Gen(content []byte) (dst string, err error) {
 	h := md5.New()
 	_, err = h.Write(content)
 
