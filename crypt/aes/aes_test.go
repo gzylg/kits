@@ -3,6 +3,7 @@ package aes
 import (
 	"log"
 	"testing"
+	"time"
 
 	"github.com/gzylg/kits/random"
 )
@@ -130,4 +131,73 @@ func TestCTRBase64(t *testing.T) {
 	if string(b) != content {
 		t.Fatal("crypt Failed.")
 	}
+}
+
+//! ===================== 速度测试 =====================
+func TestRunTime(t *testing.T) {
+	count := 10000 // 运行次数
+
+	//* -------------- CBC
+	start := time.Now()
+	for i := 0; i < count; i++ {
+		c := random.Str(128)
+		k := random.Str(16)
+
+		a, _ := CBCEncryptToBase64(c, k)
+		b, _ := CBCDecryptFromBase64(a, k)
+
+		if string(b) != c {
+			t.Fatal("crypt Failed.")
+			return
+		}
+	}
+	log.Println("CBC:", time.Since(start))
+
+	//* -------------- ECB
+	start = time.Now()
+	for i := 0; i < count; i++ {
+		c := random.Str(128)
+		k := random.Str(16)
+
+		a, _ := ECBEncryptToBase64(c, k)
+		b, _ := ECBDecryptFromBase64(a, k)
+
+		if string(b) != c {
+			t.Fatal("crypt Failed.")
+			return
+		}
+	}
+	log.Println("ECB:", time.Since(start))
+
+	//* -------------- CFB
+	start = time.Now()
+	for i := 0; i < count; i++ {
+		c := random.Str(128)
+		k := random.Str(16)
+
+		a, _ := CFBEncryptToBase64(c, k)
+		b, _ := CFBDecryptFromBase64(a, k)
+
+		if string(b) != c {
+			t.Fatal("crypt Failed.")
+			return
+		}
+	}
+	log.Println("CFB:", time.Since(start))
+
+	//* -------------- CTR
+	start = time.Now()
+	for i := 0; i < count; i++ {
+		c := random.Str(128)
+		k := random.Str(16)
+
+		a, _ := CTREncryptToBase64(c, k)
+		b, _ := CTRDecryptFromBase64(a, k)
+
+		if string(b) != c {
+			t.Fatal("crypt Failed.")
+			return
+		}
+	}
+	log.Println("CTR:", time.Since(start))
 }
