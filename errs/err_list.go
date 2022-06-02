@@ -15,7 +15,6 @@ const ( // 通用错误类型
 )
 
 const ( // 用户、角色类 10000-10999
-
 	// 10000-10200 危险型错误
 
 	ERRTYPE_USER_NOT_EXIST ErrType = 10201 + iota
@@ -29,6 +28,9 @@ const ( // 用户、角色类 10000-10999
 	ERRTYPE_USER_LOGOUT
 	ERRTYPE_USER_LOGIN_ELSEWHERE
 	ERRTYPE_USER_WRONG_STATUS
+
+	// 权限类 11000-11050
+	ERRTYPE_NO_PERMISSION ErrType = 11000 + iota
 )
 
 var msgList = make(map[ErrType]string)
