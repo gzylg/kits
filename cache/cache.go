@@ -71,6 +71,8 @@ type Cache interface {
 	ClearAll() error
 	// Start gc routine based on config string settings.
 	StartAndGC(config string) error
+
+	Close() error
 }
 
 type Getter interface {

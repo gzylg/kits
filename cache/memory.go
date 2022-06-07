@@ -285,6 +285,10 @@ func (bc *MemoryCache) StartAndGC(config string) error {
 	return nil
 }
 
+func (bc *MemoryCache) Close() error {
+	return nil
+}
+
 // check expiration.
 func (bc *MemoryCache) vacuum() {
 	bc.RLock()

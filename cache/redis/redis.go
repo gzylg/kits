@@ -348,6 +348,10 @@ func (rc *Cache) StartAndGC(config string) error {
 	return nil
 }
 
+func (rc *Cache) Close() error {
+	return rc.p.Close()
+}
+
 // connect to redis.
 func (rc *Cache) connectInit() {
 	dialFunc := func() (c redis.Conn, err error) {
