@@ -28,9 +28,12 @@ const ( // 用户、角色类 10000-10999
 	ERRTYPE_USER_LOGOUT
 	ERRTYPE_USER_LOGIN_ELSEWHERE
 	ERRTYPE_USER_WRONG_STATUS
-
-	// 权限类 11000-11050
+)
+const ( // 权限类 11000-11499
 	ERRTYPE_NO_PERMISSION ErrType = 11000 + iota
+)
+const ( // product  11500-11999
+	ERRTYPE_PRODUCT_NUM_IS_EXIST ErrType = 11500 + iota
 )
 
 var msgList = make(map[ErrType]string)
@@ -50,8 +53,12 @@ func init() {
 	msgList[ERRTYPE_USER_LOGOUT] = "已退出登录，请重新登录"
 	msgList[ERRTYPE_USER_LOGIN_ELSEWHERE] = "已在其他地方登录，若不是本人操作，请立即检查账户"
 	msgList[ERRTYPE_USER_WRONG_STATUS] = "用户状态不正常"
-	// msgList[]=""
 
+	// 权限类 11000-11499
+	msgList[ERRTYPE_NO_PERMISSION] = "无权限进行当前操作"
+
+	// product  11500-11999
+	msgList[ERRTYPE_PRODUCT_NUM_IS_EXIST] = "产品编号已存在"
 }
 
 func NewWithErrType(errType ErrType) error {
