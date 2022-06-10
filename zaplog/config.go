@@ -20,11 +20,12 @@ var logLevel = map[string]zapcore.Level{
 }
 
 type Config struct {
-	BothPrint bool // 是否需要控制台与文件同时输出
-	Colorful  bool // 是否彩色打印
-	Caller    bool
-	LogLv     string    // 日志等级（debug、info、warn、error）
-	PrintType PrintType // 打印模式
+	BothPrint  bool // 是否需要控制台与文件同时输出
+	Colorful   bool // 是否彩色打印
+	Caller     bool
+	CallerSkip int       // 如果Caller为true时，当前值有效
+	LogLv      string    // 日志等级（debug、info、warn、error）
+	PrintType  PrintType // 打印模式
 
 	LogPath    string // 参数 logPath: 日志文件保存目录
 	Logfile    string // 参数 logfile: 日志文件保存文件名

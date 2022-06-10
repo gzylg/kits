@@ -44,7 +44,7 @@ func NewLogger(cfg *Config) (logger *zap.SugaredLogger, err error) {
 	zapOpt := []zap.Option{}
 	zapOpt = append(zapOpt, zap.AddStacktrace(zapcore.ErrorLevel))
 	if cfg.Caller {
-		zapOpt = append(zapOpt, zap.AddCaller())
+		zapOpt = append(zapOpt, zap.AddCallerSkip(cfg.CallerSkip))
 	}
 	l := zap.New(core, zapOpt...)
 
