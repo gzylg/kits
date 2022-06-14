@@ -34,6 +34,7 @@ const ( // 权限类 11000-11499
 )
 const ( // product  11500-11999
 	ERRTYPE_PRODUCT_NUM_IS_EXIST ErrType = 11500 + iota
+	ERRTYPE_PRODUCT_UNAPPLIED
 )
 
 var msgList = make(map[ErrType]string)
@@ -59,6 +60,7 @@ func init() {
 
 	// product  11500-11999
 	msgList[ERRTYPE_PRODUCT_NUM_IS_EXIST] = "产品编号已存在"
+	msgList[ERRTYPE_PRODUCT_UNAPPLIED] = "未开通当前产品"
 }
 
 func NewWithErrType(errType ErrType) error {
