@@ -66,6 +66,7 @@ type Cache interface {
 	TTL(key string) (int64, error)
 	// 更新过期时间
 	Expire(key string, timeout time.Duration) error
+	Scan(pattern string) ([]string, error)
 
 	// Clear all cache.
 	ClearAll() error

@@ -267,6 +267,10 @@ func (bc *MemoryCache) ClearAll() error {
 	return nil
 }
 
+func (bc *MemoryCache) Scan(pattern string) (keys []string, err error) {
+	return []string{}, nil
+}
+
 // StartAndGC starts memory cache. Checks expiration in every clock time.
 func (bc *MemoryCache) StartAndGC(config string) error {
 	var cf map[string]int
