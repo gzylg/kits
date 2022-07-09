@@ -123,3 +123,80 @@ func StrReverse(s string) string {
 	}
 	return string(runes)
 }
+
+const (
+	// 大写英文字母 范围
+	asciiCapitalMin = 64
+	asciiCapitalMax = 91
+	// 小写写英文字母 范围
+	asciiLowerMin = 96
+	asciiLowerMax = 123
+	// 阿拉伯数字 范围
+	asciiNumMin = 47
+	asciiNumMax = 58
+)
+
+// GetEngLetter 获得字符串中的英文字母
+func GetEngLetter(s string) []string {
+	var (
+		ss []string
+	)
+
+	for i := 0; i < len(s); i++ {
+		switch {
+		case asciiCapitalMin < s[i] && s[i] < asciiCapitalMax: // 大写英文字母
+			ss = append(ss, string(s[i]))
+		case asciiLowerMin < s[i] && s[i] < asciiLowerMax: // 小写英文字母
+			ss = append(ss, string(s[i]))
+		}
+	}
+
+	return ss
+}
+
+// GetCapital 获得字符串中的大写英文字母
+func GetCapital(s string) []string {
+	var (
+		ss []string
+	)
+
+	for i := 0; i < len(s); i++ {
+		switch {
+		case asciiCapitalMin < s[i] && s[i] < asciiCapitalMax: // 大写英文字母
+			ss = append(ss, string(s[i]))
+		}
+	}
+
+	return ss
+}
+
+// GetLower 获得字符串中的小写英文字母
+func GetLower(s string) []string {
+	var (
+		ss []string
+	)
+
+	for i := 0; i < len(s); i++ {
+		switch {
+		case asciiLowerMin < s[i] && s[i] < asciiLowerMax: // 小写英文字母
+			ss = append(ss, string(s[i]))
+		}
+	}
+
+	return ss
+}
+
+// GetNum 获得字符串中的阿拉伯数字
+func GetNum(s string) []string {
+	var (
+		ss []string
+	)
+
+	for i := 0; i < len(s); i++ {
+		if asciiNumMin < s[i] && s[i] < asciiNumMax {
+			ss = append(ss, string(s[i]))
+		}
+	}
+
+	return ss
+}
