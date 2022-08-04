@@ -120,12 +120,13 @@ func (rc *Cache) GetStruct(key string, s any) error {
 	vv := reflect.ValueOf(s)
 	if vv.Kind() != reflect.Ptr {
 		return errs.New(`parameter 's' must be a pointer.`)
-	} else {
-		vvv := reflect.ValueOf(vv.Elem().Interface())
-		if vvv.Kind() != reflect.Struct {
-			return errs.New(`parameter 's' must be a struct.`)
-		}
 	}
+	// else {
+	// 	vvv := reflect.ValueOf(vv.Elem().Interface())
+	// 	if vvv.Kind() != reflect.Struct {
+	// 		return errs.New(`parameter 's' must be a struct.`)
+	// 	}
+	// }
 
 	v, err := rc.Get(key)
 	if err != nil {
