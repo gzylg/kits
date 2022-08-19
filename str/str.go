@@ -3,10 +3,16 @@ package str
 import (
 	"regexp"
 	"strings"
+	"unicode"
 )
 
 // HideStrAuto 隐藏传入文本中的部分内容，自动判断类型为手机号或者邮箱等
 func HideStrAuto(str string) string {
+	//* 检查是否有中文
+	if HasChineseChar(str) {
+		return hideStrRune(str)
+	}
+
 	pattern := `[a-zA-Z0-9]+@[a-zA-Z0-9\.]+\.[a-zA-Z0-9]+` // 判断邮箱
 	if regexp.MustCompile(pattern).MatchString(str) {
 		return HideEmail(str)
@@ -18,6 +24,15 @@ func HideStrAuto(str string) string {
 	}
 
 	return hideStr(str)
+}
+
+func HasChineseChar(str string) bool {
+	for _, r := range str {
+		if unicode.Is(unicode.Scripts["Han"], r) || (regexp.MustCompile("[\u3002\uff1b\uff0c\uff1a\u201c\u201d\uff08\uff09\u3001\uff1f\u300a\u300b]").MatchString(string(r))) {
+			return true
+		}
+	}
+	return false
 }
 
 func HideEmail(email string) string {
@@ -78,6 +93,39 @@ func hideStr(str string) string {
 	default:
 		temp = str[:4] + "***" + str[len(str)-4:]
 	}
+	return temp
+}
+
+// hideStr 隐藏传入文本的部分类容，支持中文
+func hideStrRune(str string) string {
+	strRune := []rune(str)
+	var temp string
+
+	switch len(strRune) {
+	case 0, 1:
+		temp = str
+	case 2:
+		temp = string(strRune[:1]) + "*"
+	case 3:
+		temp = string(strRune[:1]) + "*" + string(strRune[len(strRune)-1:])
+	case 4:
+		temp = string(strRune[:1]) + "**" + string(strRune[len(strRune)-1:])
+	case 5:
+		temp = string(strRune[:2]) + "**" + string(strRune[len(strRune)-1:])
+	case 6:
+		temp = string(strRune[:2]) + "**" + string(strRune[len(strRune)-2:])
+	case 7:
+		temp = string(strRune[:2]) + "***" + string(strRune[len(strRune)-2:])
+	case 8:
+		temp = string(strRune[:2]) + "***" + string(strRune[len(strRune)-3:])
+	case 9:
+		temp = string(strRune[:3]) + "***" + string(strRune[len(strRune)-3:])
+	case 10:
+		temp = string(strRune[:3]) + "***" + string(strRune[len(strRune)-4:])
+	default:
+		temp = string(strRune[:4]) + "***" + string(strRune[len(strRune)-4:])
+	}
+
 	return temp
 }
 
