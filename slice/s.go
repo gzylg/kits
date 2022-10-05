@@ -26,3 +26,16 @@ func HasInt(i int, il []int) bool {
 	}
 	return false
 }
+
+func HasUint32(i uint32, il []uint32) bool {
+	if len(il) < 1 {
+		return false
+	}
+
+	for _, ii := range il {
+		if ii == i {
+			return true
+		}
+	}
+	return false
+}
