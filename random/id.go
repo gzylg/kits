@@ -19,5 +19,5 @@ func UUIDv4WithUpper() string {
 // UUIDv4WithUpperAndJustLetter 大写的uuid并去除中间的连接符"-"
 func UUIDv4WithUpperAndJustLetter() string {
 	s := UUIDv4WithUpper()
-	return strings.Replace(s, "-", "", -1)
+	return strings.ReplaceAll(s, "-", "")
 }
