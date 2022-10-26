@@ -3,8 +3,8 @@ module github.com/gzylg/kits
 go 1.19
 
 require (
-	github.com/bwmarrin/snowflake v0.3.0
 	github.com/go-pay/gopay v1.5.82
+	github.com/go-resty/resty/v2 v2.7.0
 	github.com/gomodule/redigo v1.8.8
 	github.com/minio/minio-go/v7 v7.0.29
 	github.com/olivere/elastic/v7 v7.0.32

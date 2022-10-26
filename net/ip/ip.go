@@ -2,9 +2,13 @@ package ip
 
 import (
 	"errors"
+	"fmt"
+	"github.com/go-resty/resty/v2"
 	"net"
+	"regexp"
 	"strconv"
 	"strings"
+	"time"
 )
 
 // // 第 3 快
@@ -35,39 +39,48 @@ import (
 // 	return ip, nil
 // }
 
-// // 第 1 快
-// func GetExternalIP3() (ip string, err error) {
-// 	agent := yclient.New()
-// 	_, str, _ := agent.Get("http://txt.go.sohu.com/ip/soip").End()
-// 	if len(agent.Errors) > 0 {
-// 		return "", agent.Errors[0]
-// 	}
-// 	ip, ok := getAndCheckIP(str, `(\d+.\d+.\d+.\d+)`)
-// 	if !ok {
-// 		return "", errors.New("can not get Ip.")
-// 	}
-// 	return ip, nil
-// }
+// GetExternalIP3 获取本机外网IP 第 1 快
+func GetExternalIP3() (ip string, err error) {
+	var (
+		// NewWithClient：每次重定向都将进入 redirectPostOn302 函数
+		//req  = resty.NewWithClient(&http.Client{CheckRedirect: redirectPostOn302}).SetTimeout(time.Second * 5).R()
+		req  = resty.New().SetTimeout(time.Second * 2).R()
+		resp *resty.Response
+		uri  = "http://txt.go.sohu.com/ip/soip"
+	)
+	if resp, err = req.Get(uri); err != nil {
+		return "", err
+	}
+	if resp.StatusCode() != 200 {
+		return "", errors.New(fmt.Sprintf("get ip failed: response status code is %d", resp.StatusCode()))
+	}
 
-// func getAndCheckIP(str, reStr string) (ip string, ok bool) {
-// 	re := regexp.MustCompile(reStr)
-// 	matched := re.FindAllStringSubmatch(str, -1)
+	ip, ok := getAndCheckIP(string(resp.Body()), `(\d+.\d+.\d+.\d+)`)
+	if !ok {
+		return "", errors.New("get ip failed: can not find ip")
+	}
+	return ip, nil
+}
 
-// 	if len(matched) != 1 {
-// 		return "", false
-// 	}
+func getAndCheckIP(str, reStr string) (ip string, ok bool) {
+	re := regexp.MustCompile(reStr)
+	matched := re.FindAllStringSubmatch(str, -1)
 
-// 	for _, match := range matched {
-// 		if m, _ := regexp.MatchString("^(25[0-5]|2[0-4]\\d|[0-1]\\d{2}|[1-9]?\\d)\\.(25[0-5]|2[0-4]\\d|[0-1]\\d{2}|[1-9]?\\d)\\.(25[0-5]|2[0-4]\\d|[0-1]\\d{2}|[1-9]?\\d)\\.(25[0-5]|2[0-4]\\d|[0-1]\\d{2}|[1-9]?\\d)$", match[1]); m {
-// 			ip = match[1]
-// 			return ip, true
-// 		}
-// 	}
-// 	return "", false
-// }
+	if len(matched) != 1 {
+		return "", false
+	}
 
-// UInt32ToIP
-func UInt32ToIP(intIP uint32) net.IP {
+	for _, match := range matched {
+		if m, _ := regexp.MatchString("^(25[0-5]|2[0-4]\\d|[0-1]\\d{2}|[1-9]?\\d)\\.(25[0-5]|2[0-4]\\d|[0-1]\\d{2}|[1-9]?\\d)\\.(25[0-5]|2[0-4]\\d|[0-1]\\d{2}|[1-9]?\\d)\\.(25[0-5]|2[0-4]\\d|[0-1]\\d{2}|[1-9]?\\d)$", match[1]); m {
+			ip = match[1]
+			return ip, true
+		}
+	}
+	return "", false
+}
+
+// Uint32ToIP 整型到net.IP
+func Uint32ToIP(intIP uint32) net.IP {
 	var bytes [4]byte
 	bytes[0] = byte(intIP & 0xFF)
 	bytes[1] = byte((intIP >> 8) & 0xFF)
@@ -77,13 +90,13 @@ func UInt32ToIP(intIP uint32) net.IP {
 	return net.IPv4(bytes[3], bytes[2], bytes[1], bytes[0])
 }
 
-// UInt32ToIPStr
-func UInt32ToIPStr(intIP uint32) string {
-	return UInt32ToIP(intIP).String()
+// Uint32ToIPStr 整型到string
+func Uint32ToIPStr(intIP uint32) string {
+	return Uint32ToIP(intIP).String()
 }
 
-// IPToUInt32
-func IPToUInt32(ipnr net.IP) uint32 {
+// IPToUint32 net.IP到整型
+func IPToUint32(ipnr net.IP) uint32 {
 	bits := strings.Split(ipnr.String(), ".")
 
 	b0, _ := strconv.Atoi(bits[0])
@@ -101,8 +114,8 @@ func IPToUInt32(ipnr net.IP) uint32 {
 	return sum
 }
 
-// IPStrToUInt32
-func IPStrToUInt32(ip string) uint32 {
+// IPStrToUint32 string Ip到整型
+func IPStrToUint32(ip string) uint32 {
 	bits := strings.Split(ip, ".")
 
 	b0, _ := strconv.Atoi(bits[0])
@@ -127,9 +140,9 @@ func GetLocalIP() (string, error) {
 		return "", err
 	}
 	for _, addr := range info {
-		if ipnet, ok := addr.(*net.IPNet); ok && !ipnet.IP.IsLoopback() {
-			if ipnet.IP.To4() != nil {
-				return ipnet.IP.String(), nil
+		if ipNet, ok := addr.(*net.IPNet); ok && !ipNet.IP.IsLoopback() {
+			if ipNet.IP.To4() != nil {
+				return ipNet.IP.String(), nil
 			}
 		}
 	}
