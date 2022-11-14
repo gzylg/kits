@@ -17,3 +17,4 @@ README.zh-CN.md
 crypt/goencrypt/*
 cache/main/*
 test/*
+.idea/*
