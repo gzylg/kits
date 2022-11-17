@@ -96,7 +96,7 @@ func (tid *timeId) General() string {
 
 	// * 计算次数
 	if timestamp != tid.timestamp { // 如果当前时间不等于上次记录的时候
-		tid.count = 0 // 将计数归零
+		tid.count = 1 // 将计数归零，从1开始计数
 	} else { // 否则
 		tid.count++ // 计数递增
 	}
