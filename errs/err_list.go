@@ -7,11 +7,11 @@ const ( // 通用错误类型
 
 	ERRTYPE_DATA_NOT_FOUND ErrType = 100 + iota
 	// WRONG_VALUE     = 10000
-// 	NIL_VALUE       = 10002
-// 	NO_PERMISSION   = 10003
-// 	UPLOAD_DIR_ERR  = 10004
-// 	UPLOAD_FILE_ERR = 10005
-// 	MULTIPLE_ERR    =
+	// 	NIL_VALUE       = 10002
+	// 	NO_PERMISSION   = 10003
+	// 	UPLOAD_DIR_ERR  = 10004
+	// 	UPLOAD_FILE_ERR = 10005
+	// 	MULTIPLE_ERR    =
 )
 
 const ( // 用户、角色类 10000-10999
@@ -35,6 +35,8 @@ const ( // 权限类 11000-11499
 const ( // product  11500-11999
 	ERRTYPE_PRODUCT_NUM_IS_EXIST ErrType = 11500 + iota
 	ERRTYPE_PRODUCT_UNAPPLIED
+	ERRTYPE_PRODUCT_VERIFY_FAILED_IP
+	ERRTYPE_PRODUCT_VERIFY_FAILED_MP
 )
 
 var msgList = make(map[ErrType]string)
@@ -61,6 +63,8 @@ func init() {
 	// product  11500-11999
 	msgList[ERRTYPE_PRODUCT_NUM_IS_EXIST] = "产品编号已存在"
 	msgList[ERRTYPE_PRODUCT_UNAPPLIED] = "未开通当前产品"
+	msgList[ERRTYPE_PRODUCT_VERIFY_FAILED_IP] = "产品IP校验不通过"
+	msgList[ERRTYPE_PRODUCT_VERIFY_FAILED_MP] = "产品公众号AppID校验不通过"
 }
 
 func NewWithErrType(errType ErrType) error {
