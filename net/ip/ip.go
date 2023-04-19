@@ -2,82 +2,100 @@ package ip
 
 import (
 	"errors"
-	"fmt"
-	"github.com/go-resty/resty/v2"
+	"github.com/imroc/req/v3"
 	"net"
-	"regexp"
 	"strconv"
 	"strings"
-	"time"
 )
 
-// // 第 3 快
-// func GetExternalIP1() (ip string, err error) {
-// 	agent := yclient.New()
-// 	_, ip, _ = agent.Get("https://myexternalip.com/raw").End()
-// 	if len(agent.Errors) > 0 {
-// 		return "", agent.Errors[0]
-// 	}
-// 	ip, ok := getAndCheckIP(ip, `(\d+.\d+.\d+.\d+)`)
-// 	if !ok {
-// 		return "", errors.New("can not get Ip.")
-// 	}
-// 	return ip, nil
-// }
+//
 
-// // 第 2 快
-// func GetExternalIP2() (ip string, err error) {
-// 	agent := yclient.New()
-// 	_, str, _ := agent.Get("http://www.net.cn/static/customercare/yourip.asp").End()
-// 	if len(agent.Errors) > 0 {
-// 		return "", agent.Errors[0]
-// 	}
-// 	ip, ok := getAndCheckIP(str, `>(\d+.\d+.\d+.\d+)<`)
-// 	if !ok {
-// 		return "", errors.New("can not get Ip.")
-// 	}
-// 	return ip, nil
-// }
+// GetExternalIP1 获取公网ip，使用：http://v4.ip.zxinc.org/getip
+func GetExternalIP1() (string, error) {
+	return getExternalIP("http://v4.ip.zxinc.org/getip")
+}
 
-// GetExternalIP3 获取本机外网IP 第 1 快
-func GetExternalIP3() (ip string, err error) {
+// GetExternalIP2 获取公网ip，使用：https://ip.3322.net
+func GetExternalIP2() (string, error) {
+	return getExternalIP("https://ip.3322.net")
+}
+
+// GetExternalIP3 获取公网ip，使用：https://4.ipw.cn
+func GetExternalIP3() (string, error) {
+	return getExternalIP("https://4.ipw.cn")
+}
+
+// GetExternalIP4 获取公网ip，使用：https://v4.myip.la
+func GetExternalIP4() (string, error) {
+	return getExternalIP("https://v4.myip.la")
+}
+
+/*
+	TODO:
+	  V4
+		https://ddns.oray.com/checkip
+		https://myip4.ipip.net
+		https://www.taobao.com/help/getip.php
+		http://txt.go.sohu.com/ip/soip
+	  V6
+		https://ipv6.ddnspod.com
+		https://6.ipw.cn
+		http://v6.ip.zxinc.org/getip
+		https://speed.neu6.edu.cn/getIP.php
+		https://v6.ident.me
+		https://v6.myip.la
+*/
+
+func getExternalIP(uri string) (string, error) {
 	var (
-		// NewWithClient：每次重定向都将进入 redirectPostOn302 函数
-		//req  = resty.NewWithClient(&http.Client{CheckRedirect: redirectPostOn302}).SetTimeout(time.Second * 5).R()
-		req  = resty.New().SetTimeout(time.Second * 2).R()
-		resp *resty.Response
-		uri  = "http://txt.go.sohu.com/ip/soip"
+		client = req.C().R()
 	)
-	if resp, err = req.Get(uri); err != nil {
+	resp, err := client.Get(uri)
+	if err != nil {
 		return "", err
 	}
-	if resp.StatusCode() != 200 {
-		return "", errors.New(fmt.Sprintf("get ip failed: response status code is %d", resp.StatusCode()))
-	}
-
-	ip, ok := getAndCheckIP(string(resp.Body()), `(\d+.\d+.\d+.\d+)`)
-	if !ok {
-		return "", errors.New("get ip failed: can not find ip")
-	}
-	return ip, nil
+	return resp.String(), nil
 }
 
-func getAndCheckIP(str, reStr string) (ip string, ok bool) {
-	re := regexp.MustCompile(reStr)
-	matched := re.FindAllStringSubmatch(str, -1)
-
-	if len(matched) != 1 {
-		return "", false
-	}
-
-	for _, match := range matched {
-		if m, _ := regexp.MatchString("^(25[0-5]|2[0-4]\\d|[0-1]\\d{2}|[1-9]?\\d)\\.(25[0-5]|2[0-4]\\d|[0-1]\\d{2}|[1-9]?\\d)\\.(25[0-5]|2[0-4]\\d|[0-1]\\d{2}|[1-9]?\\d)\\.(25[0-5]|2[0-4]\\d|[0-1]\\d{2}|[1-9]?\\d)$", match[1]); m {
-			ip = match[1]
-			return ip, true
-		}
-	}
-	return "", false
-}
+//// GetExternalIP3 获取本机外网IP 第 1 快
+//func GetExternalIP3() (ip string, err error) {
+//	var (
+//		// NewWithClient：每次重定向都将进入 redirectPostOn302 函数
+//		//req  = resty.NewWithClient(&http.Client{CheckRedirect: redirectPostOn302}).SetTimeout(time.Second * 5).R()
+//		req  = resty.New().SetTimeout(time.Second * 2).R()
+//		resp *resty.Response
+//		uri  = "http://txt.go.sohu.com/ip/soip"
+//	)
+//	if resp, err = req.Get(uri); err != nil {
+//		return "", err
+//	}
+//	if resp.StatusCode() != 200 {
+//		return "", errors.New(fmt.Sprintf("get ip failed: response status code is %d", resp.StatusCode()))
+//	}
+//
+//	ip, ok := getAndCheckIP(string(resp.Body()), `(\d+.\d+.\d+.\d+)`)
+//	if !ok {
+//		return "", errors.New("get ip failed: can not find ip")
+//	}
+//	return ip, nil
+//}
+//
+//func getAndCheckIP(str, reStr string) (ip string, ok bool) {
+//	re := regexp.MustCompile(reStr)
+//	matched := re.FindAllStringSubmatch(str, -1)
+//
+//	if len(matched) != 1 {
+//		return "", false
+//	}
+//
+//	for _, match := range matched {
+//		if m, _ := regexp.MatchString("^(25[0-5]|2[0-4]\\d|[0-1]\\d{2}|[1-9]?\\d)\\.(25[0-5]|2[0-4]\\d|[0-1]\\d{2}|[1-9]?\\d)\\.(25[0-5]|2[0-4]\\d|[0-1]\\d{2}|[1-9]?\\d)\\.(25[0-5]|2[0-4]\\d|[0-1]\\d{2}|[1-9]?\\d)$", match[1]); m {
+//			ip = match[1]
+//			return ip, true
+//		}
+//	}
+//	return "", false
+//}
 
 // Uint32ToIP 整型到net.IP
 func Uint32ToIP(intIP uint32) net.IP {
@@ -95,8 +113,8 @@ func Uint32ToIPStr(intIP uint32) string {
 	return Uint32ToIP(intIP).String()
 }
 
-// IPToUint32 net.IP到整型
-func IPToUint32(ipnr net.IP) uint32 {
+// Ip2Uint32 net.IP到整型
+func Ip2Uint32(ipnr net.IP) uint32 {
 	bits := strings.Split(ipnr.String(), ".")
 
 	b0, _ := strconv.Atoi(bits[0])
@@ -114,8 +132,8 @@ func IPToUint32(ipnr net.IP) uint32 {
 	return sum
 }
 
-// IPStrToUint32 string Ip到整型
-func IPStrToUint32(ip string) uint32 {
+// IpStr2Uint32 string Ip到整型
+func IpStr2Uint32(ip string) uint32 {
 	bits := strings.Split(ip, ".")
 
 	b0, _ := strconv.Atoi(bits[0])

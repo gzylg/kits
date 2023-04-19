@@ -1,25 +1,42 @@
 package ip
 
 import (
+	"fmt"
 	"testing"
 )
 
-func TestIp2LongAndLong2ip(t *testing.T) {
-	testIp := "192.168.0.1"
-
-	uintIP := IPStrToUInt32(testIp)
-	t.Log("IPStrToUInt32: ", uintIP)
-
-	ip := UInt32ToIPStr(uintIP)
-	t.Log("UInt32ToIPStr: ", ip)
-
-	if testIp == ip {
-		t.Log("test success")
-	} else {
-		t.Error("test failed")
+func TestGetExternalIP1(t *testing.T) {
+	ip, err := GetExternalIP1()
+	if err != nil {
+		t.Fail()
 	}
+
+	fmt.Println(ip)
 }
 
-func TestAddrToUint32(t *testing.T) {
-	// addr := AddrToUint32()
+func TestGetExternalIP2(t *testing.T) {
+	ip, err := GetExternalIP2()
+	if err != nil {
+		t.Fail()
+	}
+
+	fmt.Println(ip)
+}
+
+func TestGetExternalIP3(t *testing.T) {
+	ip, err := GetExternalIP3()
+	if err != nil {
+		t.Fail()
+	}
+
+	fmt.Println(ip)
+}
+
+func TestGetExternalIP4(t *testing.T) {
+	ip, err := GetExternalIP4()
+	if err != nil {
+		t.Fail()
+	}
+
+	fmt.Println(ip)
 }
