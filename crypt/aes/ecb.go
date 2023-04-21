@@ -81,11 +81,24 @@ func ECBDecryptFromBase64(cipherText string, key string) (plainText []byte, err 
 	return ECBDecrypt(b, []byte(key))
 }
 
-func generateKey(key []byte) (genKey []byte) {
+func generateKey1(key []byte) (genKey []byte) {
 	genKey = make([]byte, 16)
 	copy(genKey, key)
 	for i := 16; i < len(key); {
 		for j := 0; j < 16 && i < len(key); j, i = j+1, i+1 {
+			genKey[j] ^= key[i]
+		}
+	}
+	return genKey
+}
+
+func generateKey(key []byte) (genKey []byte) {
+	length := len(key)
+
+	genKey = make([]byte, length)
+	copy(genKey, key)
+	for i := 16; i < length; {
+		for j := 0; j < 16 && i < length; j, i = j+1, i+1 {
 			genKey[j] ^= key[i]
 		}
 	}

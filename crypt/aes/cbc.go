@@ -19,7 +19,7 @@ func CBCEncrypt(plainText, key []byte) (cipherText []byte, err error) {
 
 	// 分组秘钥
 	// NewCipher该函数限制了输入k的长度必须为16, 24或者32
-	block, err := aes.NewCipher(key)
+	block, err := aes.NewCipher(generateKey(key))
 	if err != nil {
 		return nil, err
 	}
@@ -52,7 +52,7 @@ func CBCDecrypt(cipherText, key []byte) (plainText []byte, err error) {
 		return nil, ErrKeyLengthSixteen
 	}
 
-	block, err := aes.NewCipher(key) // 分组秘钥
+	block, err := aes.NewCipher(generateKey(key)) // 分组秘钥
 	if err != nil {
 		return nil, err
 	}

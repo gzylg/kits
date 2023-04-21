@@ -13,6 +13,14 @@ var (
 	content = random.Str(32)
 )
 
+func TestG(t *testing.T) {
+	k := "12345678901234567890123456789012"
+	kb := generateKey([]byte(k))
+	log.Println([]byte(k))
+	log.Println(kb)
+	log.Println(len([]byte(k)), len(kb))
+}
+
 //! ===================== CBC =====================
 
 func TestCBC(t *testing.T) {
@@ -133,7 +141,7 @@ func TestCTRBase64(t *testing.T) {
 	}
 }
 
-//! ===================== 速度测试 =====================
+// ! ===================== 速度测试 =====================
 func TestRunTime(t *testing.T) {
 	count := 10000 // 运行次数
 

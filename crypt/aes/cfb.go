@@ -13,7 +13,7 @@ func CFBEncrypt(plainText []byte, key []byte) (cipherText []byte, err error) {
 		return nil, ErrKeyLengthSixteen
 	}
 
-	block, err := aes.NewCipher(key)
+	block, err := aes.NewCipher(generateKey(key))
 	if err != nil {
 		return nil, err
 	}
@@ -46,7 +46,7 @@ func CFBDecrypt(cipherText []byte, key []byte) (plainText []byte, err error) {
 		return nil, ErrKeyLengthSixteen
 	}
 
-	block, err := aes.NewCipher(key)
+	block, err := aes.NewCipher(generateKey(key))
 	if err != nil {
 		return nil, err
 	}
