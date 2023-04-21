@@ -45,3 +45,8 @@ func NumAndUpperStr(n int) string {
 	alphabets := []byte(`0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZ`)
 	return string(randomCreateBytes(n, alphabets...))
 }
+
+// Appoint 指定内容，指定长度
+func Appoint(alphaStr string, n int) string {
+	return string(randomCreateBytes(n, []byte(alphaStr)...))
+}
