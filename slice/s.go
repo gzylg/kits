@@ -1,5 +1,7 @@
 package slice
 
+import "math/rand"
+
 // HasString 检查传入的字符串是否存在于slice中
 func HasString(v string, sl []string) bool {
 	if len(sl) < 1 {
@@ -38,4 +40,16 @@ func HasUint32(i uint32, il []uint32) bool {
 		}
 	}
 	return false
+}
+
+func ShuffleInt(arr []int) []int {
+	nums := make([]int, len(arr))
+	buf := make([]int, len(arr))
+	copy(buf, arr)
+	for i := range nums {
+		j := rand.Intn(len(buf))
+		nums[i] = buf[j]
+		buf = append(buf[0:j], buf[j+1:]...)
+	}
+	return nums
 }
