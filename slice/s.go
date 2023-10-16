@@ -53,3 +53,15 @@ func ShuffleInt(arr []int) []int {
 	}
 	return nums
 }
+
+func ShuffleUint32(arr []uint32) []uint32 {
+	nums := make([]uint32, len(arr))
+	buf := make([]uint32, len(arr))
+	copy(buf, arr)
+	for i := range nums {
+		j := rand.Intn(len(buf))
+		nums[i] = buf[j]
+		buf = append(buf[0:j], buf[j+1:]...)
+	}
+	return nums
+}
