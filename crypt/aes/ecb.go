@@ -6,6 +6,16 @@ import (
 )
 
 func ECBEncrypt(plainText []byte, key []byte) (cipherText []byte, err error) {
+	defer func() {
+		r := recover()
+		if r != nil {
+			e, ok := r.(error)
+			if ok {
+				plainText = nil
+				err = e
+			}
+		}
+	}()
 	if len(key) != 16 && len(key) != 24 && len(key) != 32 {
 		return nil, ErrKeyLengthSixteen
 	}
@@ -45,6 +55,16 @@ func ECBEncryptToBase64(plainText string, key string) (cipherText string, err er
 }
 
 func ECBDecrypt(cipherText []byte, key []byte) (plainText []byte, err error) {
+	defer func() {
+		r := recover()
+		if r != nil {
+			e, ok := r.(error)
+			if ok {
+				plainText = nil
+				err = e
+			}
+		}
+	}()
 	if len(key) != 16 && len(key) != 24 && len(key) != 32 {
 		return nil, ErrKeyLengthSixteen
 	}
