@@ -2,6 +2,15 @@ package slice
 
 import "math/rand"
 
+func FindIndex[T comparable](slice []T, val T) int {
+	for idx, v := range slice {
+		if v == val {
+			return idx
+		}
+	}
+	return -1
+}
+
 // HasString 检查传入的字符串是否存在于slice中
 func HasString(v string, sl []string) bool {
 	if len(sl) < 1 {
