@@ -10,8 +10,8 @@ import (
 
 // SelfPath 获取运行文件的绝对路径
 func SelfPath() string {
-	path, _ := filepath.Abs(os.Args[0])
-	return path
+	p, _ := filepath.Abs(os.Args[0])
+	return p
 }
 
 // SelfDir 获取运行文件的目录
@@ -31,8 +31,8 @@ func Exists(name string) bool {
 
 // SearchFile 在传入的目录列表中搜索文件
 func SearchFile(filename string, paths ...string) (fullpath string, err error) {
-	for _, path := range paths {
-		if fullpath = filepath.Join(path, filename); Exists(fullpath) {
+	for _, p := range paths {
+		if fullpath = filepath.Join(p, filename); Exists(fullpath) {
 			return
 		}
 	}
@@ -86,4 +86,21 @@ func Base64Type(t string) string {
 	}
 
 	return ""
+}
+
+// GetFilesFormPath 枚举指定目录下的文件，返回文件列表
+func GetFilesFormPath(p string) ([]string, error) {
+	// 读取目录
+	files, err := os.ReadDir(p)
+	if err != nil {
+		return nil, err
+	}
+
+	// 枚举文件
+	var list []string
+	for _, file := range files {
+		list = append(list, file.Name())
+	}
+
+	return list, nil
 }
