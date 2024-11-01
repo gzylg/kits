@@ -31,6 +31,7 @@ func GetExternalIP3() (string, error) {
 }
 
 // GetExternalIP4 获取公网ip，使用：https://v4.myip.la
+// Deprecated: 失效
 func GetExternalIP4() (string, error) {
 	return getExternalIP("https://v4.myip.la")
 }
