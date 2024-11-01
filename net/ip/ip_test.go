@@ -5,6 +5,15 @@ import (
 	"testing"
 )
 
+func TestGetExternalIP(t *testing.T) {
+	ip, err := GetExternalIP()
+	if err != nil {
+		t.Fail()
+	}
+
+	fmt.Println(ip)
+}
+
 func TestGetExternalIP1(t *testing.T) {
 	ip, err := GetExternalIP1()
 	if err != nil {

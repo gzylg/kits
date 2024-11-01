@@ -2,13 +2,18 @@ package ip
 
 import (
 	"errors"
+	"fmt"
+	"github.com/gzylg/kits/random"
 	"github.com/imroc/req/v3"
 	"net"
 	"strconv"
 	"strings"
 )
 
-//
+// GetExternalIP 获取公网ip，使用：https://ip.shuzilm.cn/ip?pkg=com.xxxxx.xxxxx
+func GetExternalIP() (string, error) {
+	return getExternalIP(fmt.Sprintf("https://ip.shuzilm.cn/ip?pkg=com.%s.%s", random.Str(5), random.Str(5)))
+}
 
 // GetExternalIP1 获取公网ip，使用：http://v4.ip.zxinc.org/getip
 func GetExternalIP1() (string, error) {
