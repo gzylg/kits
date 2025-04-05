@@ -25,3 +25,29 @@ func Shuffle[T any](arr []T) []T {
 	}
 	return arr
 }
+
+// Unique 去重并返回新切片，使用comparable约束，支持所有可用于比较的类型。struct等自定义类型，需确保其字段均为可比较类型
+func Unique[T comparable](input []T) []T {
+	seen := make(map[T]struct{})
+	result := make([]T, 0, len(input))
+	for _, v := range input {
+		if _, ok := seen[v]; !ok {
+			seen[v] = struct{}{}
+			result = append(result, v)
+		}
+	}
+	return result
+}
+
+// UniqueInOrder 去重+排序并返回新切片，使用comparable约束，支持所有可用于比较的类型。struct等自定义类型，需确保其字段均为可比较类型
+func UniqueInOrder[T comparable](input []T) []T {
+	seen := make(map[T]struct{})
+	result := make([]T, 0, len(input))
+	for _, v := range input {
+		if _, ok := seen[v]; !ok {
+			seen[v] = struct{}{}
+			result = append(result, v)
+		}
+	}
+	return result
+}
