@@ -50,7 +50,7 @@ func NewLogger(cfg *LogConfig) *zap.SugaredLogger {
 
 	// 初始化Logger
 	if cfg.ShowCaller {
-		logger = zap.New(zapcore.NewTee(cores...), zap.AddCallerSkip(1))
+		logger = zap.New(zapcore.NewTee(cores...), zap.AddCaller(), zap.AddCallerSkip(1))
 	} else {
 		logger = zap.New(zapcore.NewTee(cores...))
 	}
