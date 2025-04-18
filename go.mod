@@ -3,6 +3,7 @@ module github.com/gzylg/kits
 go 1.19
 
 require (
+	github.com/avast/retry-go v2.7.0+incompatible
 	github.com/go-co-op/gocron v1.35.2
 	github.com/gomodule/redigo v1.8.8
 	github.com/google/go-querystring v1.1.0
@@ -10,7 +11,7 @@ require (
 	github.com/hashicorp/consul/api v1.26.1
 	github.com/imroc/req/v3 v3.42.3
 	github.com/satori/go.uuid v1.2.0
-	go.uber.org/zap v1.21.0
+	go.uber.org/zap v1.27.0
 	google.golang.org/grpc v1.60.1
 	google.golang.org/protobuf v1.32.0
 	gopkg.in/natefinch/lumberjack.v2 v2.0.0
@@ -48,7 +49,7 @@ require (
 	github.com/robfig/cron/v3 v3.0.1 // indirect
 	go.uber.org/atomic v1.9.0 // indirect
 	go.uber.org/mock v0.4.0 // indirect
-	go.uber.org/multierr v1.6.0 // indirect
+	go.uber.org/multierr v1.11.0 // indirect
 	golang.org/x/crypto v0.18.0 // indirect
 	golang.org/x/exp v0.0.0-20240103183307-be819d1f06fc // indirect
 	golang.org/x/mod v0.14.0 // indirect
