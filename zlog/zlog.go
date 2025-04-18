@@ -9,9 +9,12 @@ import (
 )
 
 type LogConfig struct {
-	Level      zapcore.Level `json:"level"`      // 日志级别
-	Color      bool          `json:"color"`      // 是否彩色
-	ShowCaller bool          `json:"showCaller"` // 是否显示调用者
+	Level           zapcore.Level `json:"level"`      // 日志级别
+	Color           bool          `json:"color"`      // 是否彩色
+	ShowCaller      bool          `json:"showCaller"` // 是否显示调用者
+	CallerSkip      int           `json:"callerSkip"`
+	ShowStacktrace  bool          `json:"showStacktrace"`  // 是否显示堆栈跟踪
+	StacktraceLevel zapcore.Level `json:"stacktraceLevel"` // 堆栈跟踪级别
 
 	// 文件日志相关配置
 	FileLogWarnConfig  *lumberjack.Logger // <=warn级别日志文件配置，为nil时不启用；Level高于WarnLevel时，<=warn级别文件日志自动关闭
@@ -49,11 +52,17 @@ func NewLogger(cfg *LogConfig) *zap.SugaredLogger {
 	}
 
 	// 初始化Logger
+	opts := []zap.Option{}
 	if cfg.ShowCaller {
-		logger = zap.New(zapcore.NewTee(cores...), zap.AddCaller(), zap.AddCallerSkip(1))
-	} else {
-		logger = zap.New(zapcore.NewTee(cores...))
+		opts = append(opts, zap.AddCaller())
+		if cfg.CallerSkip > 0 {
+			opts = append(opts, zap.AddCallerSkip(cfg.CallerSkip))
+		}
 	}
+	if cfg.ShowStacktrace {
+		opts = append(opts, zap.AddStacktrace(zap.LevelEnablerFunc(func(l zapcore.Level) bool { return l >= cfg.StacktraceLevel })))
+	}
+	logger = zap.New(zapcore.NewTee(cores...), opts...)
 
 	sugar = logger.Sugar()
 	return sugar
