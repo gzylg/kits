@@ -18,3 +18,5 @@ crypt/goencrypt/*
 cache/main/*
 test/*
 .idea/*
+zlog/*.log
+.DS_Store

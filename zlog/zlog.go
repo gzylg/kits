@@ -35,7 +35,7 @@ func NewLogger(cfg *LogConfig) *zap.SugaredLogger {
 	}
 
 	// 初始化Console Core
-	cores = append(cores, zapcore.NewCore(newConsoleEncoder(cfg), zapcore.AddSync(os.Stdout), zap.DebugLevel))
+	cores = append(cores, zapcore.NewCore(newConsoleEncoder(cfg), zapcore.AddSync(os.Stdout), zap.LevelEnablerFunc(func(l zapcore.Level) bool { return l >= cfg.Level })))
 
 	// 初始化 <=warn 级别 Core
 	warnFileWriterSyncer := newWarnFileWriterSyncer(cfg)

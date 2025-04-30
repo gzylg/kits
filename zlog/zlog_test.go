@@ -10,7 +10,7 @@ import (
 
 func TestZlog(t *testing.T) {
 	_ = zlog.NewLogger(&zlog.LogConfig{
-		Level:      zapcore.DebugLevel,
+		Level:      zapcore.InfoLevel,
 		Color:      true,
 		ShowCaller: false,
 
