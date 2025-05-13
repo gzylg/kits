@@ -20,13 +20,15 @@
 //
 // Usage:
 // import(
-//   _ "github.com/beego/beego/v2/client/cache/redis"
-//   "github.com/beego/beego/v2/client/cache"
+//
+//	_ "github.com/beego/beego/v2/client/cache/redis"
+//	"github.com/beego/beego/v2/client/cache"
+//
 // )
 //
-//  bm, err := cache.NewCache("redis", `{"conn":"127.0.0.1:11211"}`)
+//	bm, err := cache.NewCache("redis", `{"conn":"127.0.0.1:11211"}`)
 //
-//  more docs http://beego.vip/docs/module/cache.md
+//	more docs http://beego.vip/docs/module/cache.md
 package redis
 
 import (
@@ -86,11 +88,13 @@ func (rc *Cache) associate(originKey any) string {
 
 // Get cache from redis.
 func (rc *Cache) Get(key string) (any, error) {
-	if v, err := rc.do("GET", key); err == nil {
-		return v, nil
-	} else {
+	v, err := rc.do("GET", key)
+	if err != nil {
 		return nil, err
+	} else if v == nil {
+		return nil, errs.New("key is not exist")
 	}
+	return v, nil
 }
 
 func (rc *Cache) GetString(key string) (string, error) {
